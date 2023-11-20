@@ -2,10 +2,10 @@
 
 ## Todo:
 
-- [ ] Input generator - small, medium, large
-- [ ] Output verifier
-- [ ] 3 test files - small, medium, large
-- [ ] simple solution
+- [x] Input generator - small, medium, large
+- [x] Output verifier
+- [x] 3 test files - small, medium, large
+- [x] simple solution
 - [ ] std::thread solution
 - [ ] openmp solution
 - [ ] solution speed checker
