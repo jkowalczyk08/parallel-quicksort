@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include <ctime>
 #include <ratio>
 #include <chrono>
@@ -45,13 +46,22 @@ pair<int,int> partition(int numbers[], int l, int r) {
 }
 
 // sort numbers from [l;r]
-void quicksort(int numbers[], int l, int r) {
+void parallel_quicksort(int numbers[], int l, int r, int cur_depth, int max_depth) {
     if(r - l + 1 < 20) {
         selectionSort(numbers, l, r);
     } else {
         pair<int,int> p = partition(numbers, l, r);
-        quicksort(numbers, l, p.first - 1);
-        quicksort(numbers, p.second, r);
+        
+        if(cur_depth <= max_depth) {
+            std::thread lthread(parallel_quicksort, numbers, l, p.first-1, cur_depth+1, max_depth);
+            std::thread rthread(parallel_quicksort, numbers, p.second, r, cur_depth+1, max_depth);
+            lthread.join();
+            rthread.join();
+        } else {
+            parallel_quicksort(numbers, l, p.first - 1, cur_depth, max_depth);
+            parallel_quicksort(numbers, p.second, r, cur_depth, max_depth);
+        }
+
     }
 }
 
@@ -78,17 +88,20 @@ void print_time(double total_duration) {
     cout << "Total duration is: " << total_duration << "ms\n";
 }
 
+
 int main(int argc, char* argv[]) {
     int mode = atoi(argv[1]);
+    int max_depth = atoi(argv[2]); // thread_count = 2^max_depth
+
     read_input();
 
     auto start = std::chrono::steady_clock::now();
-
-    quicksort(numbers, 0, n-1);
-
+    
+    parallel_quicksort(numbers, 0, n-1, 1, max_depth);
+    
     auto end = std::chrono::steady_clock::now();
     double duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-    
+
     if(mode == MODE_PRINT_ARRAYS) {
         print_output();
     }

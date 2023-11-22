@@ -2,6 +2,7 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <omp.h>
 using namespace std;
 
 // sorts numbers from [l;r]
@@ -45,13 +46,27 @@ pair<int,int> partition(int numbers[], int l, int r) {
 }
 
 // sort numbers from [l;r]
-void quicksort(int numbers[], int l, int r) {
+void normal_quicksort(int numbers[], int l, int r) {
     if(r - l + 1 < 20) {
         selectionSort(numbers, l, r);
     } else {
         pair<int,int> p = partition(numbers, l, r);
-        quicksort(numbers, l, p.first - 1);
-        quicksort(numbers, p.second, r);
+        normal_quicksort(numbers, l, p.first - 1);
+        normal_quicksort(numbers, p.second, r);
+    }
+}
+
+void omp_quicksort(int numbers[], int l, int r, int min_parallel_size) {
+    if(r - l + 1 < 20) {
+        selectionSort(numbers, l, r);
+    } else {
+        pair<int,int> p = partition(numbers, l, r);
+
+        #pragma omp task shared(numbers) if(r - l >  min_parallel_size)
+        omp_quicksort(numbers, l, p.first - 1, min_parallel_size);
+
+        #pragma omp task shared(numbers) if(r - l > min_parallel_size)
+        omp_quicksort(numbers, p.second, r, min_parallel_size);
     }
 }
 
@@ -80,11 +95,17 @@ void print_time(double total_duration) {
 
 int main(int argc, char* argv[]) {
     int mode = atoi(argv[1]);
+    int thread_count = atoi(argv[2]);
+    omp_set_num_threads(thread_count);
     read_input();
 
     auto start = std::chrono::steady_clock::now();
 
-    quicksort(numbers, 0, n-1);
+    #pragma omp parallel
+    {
+        #pragma omp single
+        omp_quicksort(numbers, 0, n-1, 1000);
+    }
 
     auto end = std::chrono::steady_clock::now();
     double duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
