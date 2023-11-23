@@ -20,11 +20,10 @@ with open(correct) as f1:
         
         for (f1_line, f2_line) in zip(f1_data, f2_data):
             if f1_line != f2_line:
-                print("Line ", i, ":")
-                print("\tFile 1:", f1_line)
-                print("\tFile 2:", f2_line)
                 identical = False
+                break
             i += 1
 
-        if(identical): print("Files are identical")
+        if(identical): print("OK")
+        else: print("ANS")
         

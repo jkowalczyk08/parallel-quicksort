@@ -3,6 +3,7 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <iomanip>
 using namespace std;
 
 // sorts numbers from [l;r]
@@ -85,11 +86,13 @@ void print_output() {
 }
 
 void print_time(double total_duration) {
-    cout << "Total duration is: " << total_duration << "ms\n";
+    cout << "Size: " << setw(15) << left << n << " Total duration: " << setw(8) << left << total_duration << "ms\n";
 }
 
 
 int main(int argc, char* argv[]) {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     int mode = atoi(argv[1]);
     int max_depth = atoi(argv[2]); // thread_count = 2^max_depth
 

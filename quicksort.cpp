@@ -2,6 +2,7 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <iomanip>
 using namespace std;
 
 // sorts numbers from [l;r]
@@ -75,7 +76,7 @@ void print_output() {
 }
 
 void print_time(double total_duration) {
-    cout << "Total duration is: " << total_duration << "ms\n";
+    cout << "Size: " << setw(15) << left << n << " Total duration: " << setw(8) << left << total_duration << "ms\n";
 }
 
 int main(int argc, char* argv[]) {

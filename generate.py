@@ -1,17 +1,21 @@
 #!/usr/bin/python3
 import random
+import os.path
 
-correctness_input_sizes = [10000, 30000, 120000, 480000, 2000000]
-correctness_input_names = ['1c.in', '2c.in', '3c.in', '4c.in', '5c.in']
-correctness_output_names = ['1c.out', '2c.out', '3c.out', '4c.out', '5c.out']
-time_input_sizes = [10000, 30000, 120000, 480000, 2000000, 8000000, 32000000, 125000000, 500000000]
-time_input_names = ['1.in', '2.in', '3.in', '4.in', '5.in', '6.in', '7.in', '8.in', '9.in']
-input_file_name ='test.in'
-correct_output_file_name = 'test.out'
+output_names = ['1.out', '2.out', '3.out', '4.out', '5.out']
+input_sizes = [10000, 40000, 160000, 640000, 2560000, 10240000, 40960000, 163840000]
+input_names = ['1.in', '2.in', '3.in', '4.in', '5.in', '6.in', '7.in', '8.in']
 
-for (size, name_in, name_out) in zip(correctness_input_sizes, correctness_input_names, correctness_output_names):
-    with open(name_in, 'w') as ifile:
-        with open(name_out, 'w') as ofile:            
+subdirectory = 'test_cases'
+
+try:
+    os.mkdir(subdirectory)
+except Exception:
+    pass
+
+for (size, name_in, name_out) in zip(input_sizes[:5], input_names[:5], output_names):
+    with open(os.path.join(subdirectory, name_in), 'w') as ifile:
+        with open(os.path.join(subdirectory, name_out), 'w') as ofile:            
             print(f'Generating input of size {size}')
             # generate input
             input = []
@@ -31,8 +35,8 @@ for (size, name_in, name_out) in zip(correctness_input_sizes, correctness_input_
                 ofile.write(f'{i} ')
             ofile.write('\n')
 
-for (size, name) in zip(time_input_sizes, time_input_names):
-    with open(name, 'w') as ifile:
+for (size, name) in zip(input_sizes[5:], input_names[5:]):
+    with open(os.path.join(subdirectory, name), 'w') as ifile:
         print(f'Generating input of size {size}')
         # generate input and write to file
         ifile.write(f'{size}\n')
