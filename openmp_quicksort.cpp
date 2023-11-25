@@ -47,16 +47,6 @@ pair<int,int> partition(int numbers[], int l, int r) {
 }
 
 // sort numbers from [l;r]
-void normal_quicksort(int numbers[], int l, int r) {
-    if(r - l + 1 < 20) {
-        selectionSort(numbers, l, r);
-    } else {
-        pair<int,int> p = partition(numbers, l, r);
-        normal_quicksort(numbers, l, p.first - 1);
-        normal_quicksort(numbers, p.second, r);
-    }
-}
-
 void omp_quicksort(int numbers[], int l, int r, int min_parallel_size) {
     if(r - l + 1 < 20) {
         selectionSort(numbers, l, r);
