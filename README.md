@@ -2,7 +2,7 @@
 
 ## Usage:
 
-Run `./generate.py` to generate input. Modify config in generate.py file. This might take a few minutes.
+Run `./generate.py` to generate input. This might take a few minutes.
 
 Run `./clean.py` to clean generated input and output.
 
