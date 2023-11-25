@@ -74,6 +74,7 @@ void omp_quicksort(int numbers[], int l, int r, int min_parallel_size) {
 #define MAX_N 500000000
 #define MODE_PRINT_ARRAYS 0
 #define MODE_PRINT_TIME 1
+#define MIN_PARALLEL_SIZE 1500
 
 int numbers[MAX_N];
 int n;
@@ -107,7 +108,7 @@ int main(int argc, char* argv[]) {
     #pragma omp parallel
     {
         #pragma omp single
-        omp_quicksort(numbers, 0, n-1, 1000);
+        omp_quicksort(numbers, 0, n-1, MIN_PARALLEL_SIZE);
     }
 
     auto end = std::chrono::steady_clock::now();
