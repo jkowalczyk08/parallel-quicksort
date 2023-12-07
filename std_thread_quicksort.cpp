@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int mode = atoi(argv[1]);
-    int max_depth = atoi(argv[2]); // thread_count = 2^max_depth
+    int max_depth = atoi(argv[2]); // active_thread_count = 2^max_depth
 
     read_input();
 
