@@ -9,8 +9,8 @@ Given max_depth == 2, the first call will create two threads, then these two thr
 As you can see, the number of active threads sorting the array in parallel is 2^max_depth.
 
 ## OpenMP version
-In the previous version threads above the max_depth level of recursion were idle. Here I use the omp task pragma, to make sure that no thread is Idle.
-For every recursive quicksort call bigger than the min_parallel_size parameter I create a task. This task is then picked up by one of the waiting threads from the thread pool.
+In the previous version threads above the max_depth level of recursion were idle. Here I use the omp task pragma, to make sure that no thread is idle.
+For every recursive quicksort call with array size bigger than the min_parallel_size parameter I create a task. This task is then picked up by one of the waiting threads from the thread pool.
 
 ## Results
 The diagram compares results on an 8-core CPU for the standard version, the std::thread version with 16 active threads (max_depth of 4), and the OpenMP version with 16 threads.
